@@ -1,9 +1,5 @@
 {%- from salt['file.join'](tpldir,"map.jinja") import stack with context %}
 
-{# Check and Clear cached files that are missing on the master #}
-include:
-  - .cache
-
 
 copy file:
   file.serialize: 

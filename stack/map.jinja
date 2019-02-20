@@ -3,6 +3,23 @@
 
 {% set stack = {} %}
 
+{% set master_files = salt['cp.list_master'](saltenv='base') %}
+{% set minion_files = salt['cp.list_minion'](saltenv='base') %}
+{% set repl = salt['file.join'](opts['cachedir'], 'files/base/') %}
+
+{#
+  Iterate over all files, check if the file exists on the master 
+  and remove the files that don't.
+#}
+{% for file in minion_files %}
+  {% set basefile = file.replace(repl, '') %}
+  {% if basefile not in master_files and basefile.startswith('stack') %}
+    {% do salt.log.warning('Removing: ' + file) %}
+    {% do salt['file.remove'](file) %}
+  {% endif %}
+{% endfor %}
+
+
 {# Resolve tplpath as directory #}
 {% set dirname = salt['file.dirname'](tplpath) %}
 {% do salt.log.info('Directory is ' + dirname)%}
@@ -19,6 +36,7 @@
   {% set configpath = salt['file.join'](dirname,folder) %}
   {% do salt['cp.cache_dir']('salt://stack/' + folder) %}
   {% for file in salt['file.find'](configpath, name='*.yml') %}
+    {% do salt.log.warning('Importing: ' + file) %}
     {% import_yaml file as data %}
     {% do salt['slsutil.update'](stack, data) %}
   {% endfor %}
