@@ -1,7 +1,7 @@
 mapstack-formula
 ======
 
-This is a prototype on how to create a map structure for use with Formulas / States.
+This is a prototype on how to create a map structure for use with Formulas / States. This is supposed to mimic the way pillarstack works (https://docs.saltstack.com/en/latest/ref/pillar/all/salt.pillar.stack.html)
 
 Main usage here is that we iterate over different yaml files and then create a config file in the minion.d folder
 
