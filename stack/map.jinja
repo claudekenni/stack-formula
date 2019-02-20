@@ -1,0 +1,23 @@
+# -*- coding: utf-8 -*-
+# vim: ft=jinja
+
+{% set stack = {} %}
+
+{# Resolve tplpath as directory #}
+{% set dirname = salt['file.dirname'](tplpath) %}
+
+{# Import the Configuration File #}
+{% import_yaml "stack/config.yaml" as config %}
+
+{#
+  Iterate over all Folders from the Config
+  Import all yml files and add the to the stack dict
+#}
+{% for folder in config %}
+{% set configpath = salt['file.join'](dirname,folder) %}
+{% for file in salt['file.find'](configpath, name='*.yml') %}
+  {% import_yaml file as data %}
+  {% do salt['slsutil.update'](stack, data) %}
+{% endfor %}
+{% endfor %}
+
