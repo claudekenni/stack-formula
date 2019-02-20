@@ -1,4 +1,4 @@
-{%- do salt['cp.cache_dir']('salt://maps') %}
+{%- do salt['cp.cache_dir']('salt://stack') %}
 
 {%- set master_files = salt['cp.list_master'](saltenv='base') %}
 {%- set minion_files = salt['cp.list_minion'](saltenv='base') %}
