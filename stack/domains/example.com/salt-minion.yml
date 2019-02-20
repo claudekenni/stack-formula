@@ -1,0 +1,3 @@
+salt:
+  minion:
+    master: salt.example.com

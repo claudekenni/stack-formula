@@ -1,3 +1,4 @@
 - common/{{ grains.kernel }}
 - domains/{{ grains.domain }}
+- domains/{{ grains.domain }}/{{ grains.kernel }}
 - minions/{{ grains.id }}

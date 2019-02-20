@@ -1,0 +1,10 @@
+salt:
+  master:
+    fileserver_backend:
+      - roots
+    file_roots:
+      base:
+        - /srv/salt/other
+    pillar_roots:
+      base:
+        - /srv/pillar/other
