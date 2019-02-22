@@ -1,9 +1,0 @@
-{% if grains.os == 'SUSE' %}
-linux:
-  var1: true
-  var2: Just some example
-{% elif grains.os == 'Ubuntu' %}
-linux:
-  var1: false
-  var2: another example
-{% endif %}
