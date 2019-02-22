@@ -55,3 +55,88 @@ local:
         master:
             salt.lab.fit
 ```
+
+Files:
+```
+lab08ld201:/etc/salt/minion.d # cat /etc/salt/minion.d/_sdb.conf
+########################################################################
+# File managed by Salt at <salt://stack/files/default/sdb.conf>.
+# Your changes will be overwritten.
+########################################################################
+stack:
+  driver: yaml
+  files:
+    - /etc/salt/minion.d/_stack.yaml
+```
+
+```
+lab08ld201:/etc/salt/minion.d # cat /etc/salt/minion.d/_sdb_keys.conf
+########################################################################
+# File managed by Salt at <salt://stack/files/default/sdb_keys.conf>.
+# Your changes will be overwritten.
+########################################################################
+sshd_config: sdb://stack/sshd_config
+salt: sdb://stack/salt
+linux: sdb://stack/linux
+```
+
+```
+lab08ld201:/etc/salt/minion.d # cat /etc/salt/minion.d/_stack.yaml
+linux:
+  var1: true
+  var2: Just some example
+salt:
+  master:
+    file_roots:
+      base:
+      - /srv/salt
+    fileserver_backend:
+    - roots
+    pillar_roots:
+      base:
+      - /srv/pillar
+  minion:
+    master: salt.lab.fit
+sshd_config:
+  AcceptEnv: LANG LC_*
+  AuthorizedKeysCommand: /usr/bin/sss_ssh_authorizedkeys
+  AuthorizedKeysCommandUser: nobody
+  AuthorizedKeysFile: '%h/.ssh/authorized_keys'
+  ChallengeResponseAuthentication: 'no'
+  ClientAliveCountMax: 3
+  ClientAliveInterval: 0
+  ConfigBanner: '# Alternative banner for the config file
+
+    # (Indented) hash signs lose their special meaning here
+
+    # and the lines will be written as-is.
+
+'
+  HostKey:
+  - /etc/ssh/ssh_host_rsa_key
+  - /etc/ssh/ssh_host_dsa_key
+  - /etc/ssh/ssh_host_ecdsa_key
+  - /etc/ssh/ssh_host_ed25519_key
+  HostbasedAuthentication: 'no'
+  IgnoreRhosts: 'yes'
+  LogLevel: INFO
+  LoginGraceTime: 300
+  MaxAuthTries: 6
+  MaxSessions: 10
+  PasswordAuthentication: 'no'
+  PermitEmptyPasswords: 'no'
+  PermitRootLogin: 'yes'
+  Port: 22
+  PrintLastLog: 'yes'
+  PrintMotd: 'yes'
+  Protocol: 2
+  StrictModes: 'yes'
+  Subsystem: sftp /usr/lib/openssh/sftp-server
+  SyslogFacility: AUTH
+  TCPKeepAlive: 'yes'
+  UseDNS: 'no'
+  UsePAM: 'yes'
+  UsePrivilegeSeparation: sandbox
+  X11DisplayOffset: 10
+  X11Forwarding: 'no'
+```
