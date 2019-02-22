@@ -1,6 +1,11 @@
 Example by using openssh-formula from saltstack-formulas
 =====
 
+Quick overview:
+- Change formula to use config.get instead of pillar.get
+- Use stack state to create configuration values in `/etc/salt/minion.d/_stack.yaml`
+- `/etc/salt/minion.d/_stack.yaml` is read a SDB values in `/etc/salt/minion.d/_sdb.conf`
+
 The openssh-formula has been adjusted in openssh/map.jinja and openssh/config.sls to do a config.get instead of pillar.get
 ```jinja
 diff --git a/openssh/config.sls b/openssh/config.sls
