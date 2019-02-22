@@ -54,6 +54,88 @@ local:
         ----------
         master:
             salt.lab.fit
+
+lab08ld201:/etc/salt/minion.d # salt-call config.get linux
+local:
+    ----------
+    var1:
+        True
+    var2:
+        Just some example
+
+```
+
+```
+lab08ld201:/etc/salt/minion.d # salt-call config.get sshd_config
+local:
+    ----------
+    AcceptEnv:
+        LANG LC_*
+    AuthorizedKeysCommand:
+        /usr/bin/sss_ssh_authorizedkeys
+    AuthorizedKeysCommandUser:
+        nobody
+    AuthorizedKeysFile:
+        %h/.ssh/authorized_keys
+    ChallengeResponseAuthentication:
+        no
+    ClientAliveCountMax:
+        3
+    ClientAliveInterval:
+        0
+    ConfigBanner:
+        # Alternative banner for the config file
+        # (Indented) hash signs lose their special meaning here
+        # and the lines will be written as-is.
+    HostKey:
+        - /etc/ssh/ssh_host_rsa_key
+        - /etc/ssh/ssh_host_dsa_key
+        - /etc/ssh/ssh_host_ecdsa_key
+        - /etc/ssh/ssh_host_ed25519_key
+    HostbasedAuthentication:
+        no
+    IgnoreRhosts:
+        yes
+    LogLevel:
+        INFO
+    LoginGraceTime:
+        300
+    MaxAuthTries:
+        6
+    MaxSessions:
+        10
+    PasswordAuthentication:
+        no
+    PermitEmptyPasswords:
+        no
+    PermitRootLogin:
+        yes
+    Port:
+        22
+    PrintLastLog:
+        yes
+    PrintMotd:
+        yes
+    Protocol:
+        2
+    StrictModes:
+        yes
+    Subsystem:
+        sftp /usr/lib/openssh/sftp-server
+    SyslogFacility:
+        AUTH
+    TCPKeepAlive:
+        yes
+    UseDNS:
+        no
+    UsePAM:
+        yes
+    UsePrivilegeSeparation:
+        sandbox
+    X11DisplayOffset:
+        10
+    X11Forwarding:
+        no
 ```
 
 Files:
