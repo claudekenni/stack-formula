@@ -2,9 +2,13 @@ Example by using openssh-formula from saltstack-formulas
 =====
 
 Quick overview:
-- Change formula to use config.get instead of pillar.get
+- Change formula to use config.get instead of pillar.get 
 - Use stack state to create configuration values in `/etc/salt/minion.d/_stack.yaml`
-- `/etc/salt/minion.d/_stack.yaml` is read a SDB values in `/etc/salt/minion.d/_sdb.conf`
+- `/etc/salt/minion.d/_stack.yaml` is read as SDB values in 
+  - `/etc/salt/minion.d/_sdb.conf` using the SDB YAML Module
+  - `/etc/salt/minion.d/_sdb_keys.conf` maps the top level keys into configuration values
+     - See: https://docs.saltstack.com/en/latest/topics/sdb/index.html#using-sdb-uris-in-files
+
 
 The openssh-formula has been adjusted in openssh/map.jinja and openssh/config.sls to do a config.get instead of pillar.get
 ```jinja
