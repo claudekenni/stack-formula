@@ -1,7 +1,7 @@
 Example by using openssh-formula from saltstack-formulas
 =====
 
-The openssh-formula has been adjusted in the openssh/map.jinja file to do a config.get instead of pillar.get
+The openssh-formula has been adjusted in openssh/map.jinja and openssh/config.sls to do a config.get instead of pillar.get
 ```jinja
 diff --git a/openssh/config.sls b/openssh/config.sls
 index 76a11a1..09efb45 100644
