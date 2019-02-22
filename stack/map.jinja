@@ -1,44 +1,22 @@
 # -*- coding: utf-8 -*-
 # vim: ft=jinja
 
-{% set stack = {} %}
+{## Start imports as ##}
+{% import_yaml 'stack/defaults.yaml' as default_settings %}
+{% import_yaml 'stack/osfamilymap.yaml' as osfamilymap %}
+{% import_yaml 'stack/osmap.yaml' as osmap %}
+{% import_yaml 'stack/osfingermap.yaml' as osfingermap %}
 
-{% set master_files = salt['cp.list_master'](saltenv='base') %}
-{% set minion_files = salt['cp.list_minion'](saltenv='base') %}
-{% set repl = salt['file.join'](opts['cachedir'], 'files/base/') %}
+{% set defaults = salt['grains.filter_by'](default_settings,
+    default='stack',
+    merge=salt['grains.filter_by'](osfamilymap, grain='os_family',
+      merge=salt['grains.filter_by'](osmap, grain='os',
+        merge=salt['grains.filter_by'](osfingermap, grain='osfinger',
+          merge=salt['pillar.get']('stack:lookup', default={})
+        )
+      )
+    )
+) %}
 
-{#
-  Iterate over all files, check if the file exists on the master 
-  and remove the files that don't.
-#}
-{% for file in minion_files %}
-  {% set basefile = file.replace(repl, '') %}
-  {% if basefile not in master_files and basefile.startswith('stack') %}
-    {% do salt.log.warning('Removing: ' + file) %}
-    {% do salt['file.remove'](file) %}
-  {% endif %}
-{% endfor %}
-
-
-{# Resolve tplpath as directory #}
-{% set dirname = salt['file.dirname'](tplpath) %}
-{% do salt.log.info('Directory is ' + dirname)%}
-
-{# Import the Configuration File #}
-{% import_yaml "stack/config.yaml" as config %}
-
-{#
-  Iterate over all Folders from the Config
-  Cache all files within these folders
-  Import all yml files and add them to the stack dict
-#}
-{% for folder in config %}
-  {% set configpath = salt['file.join'](dirname,folder) %}
-  {% do salt['cp.cache_dir']('salt://stack/' + folder) %}
-  {% for file in salt['file.find'](configpath, name='*.yml') %}
-    {% do salt.log.warning('Importing: ' + file) %}
-    {% import_yaml file as data %}
-    {% do salt['slsutil.update'](stack, data) %}
-  {% endfor %}
-{% endfor %}
-
+{## Merge the stack pillar ##}
+{% set stack = salt['pillar.get']('stack', default=defaults, merge=True) %}

@@ -1,0 +1,8 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+---
+stack:
+  sdb:
+    config: '/etc/salt/minion.d/_sdb.conf'
+    yaml: '/etc/salt/minion.d/_stack.yaml'
+    sdb_keys: '/etc/salt/minion.d/_sdb_keys.conf'

@@ -1,0 +1,9 @@
+name: stack
+title: Template Formula
+maintainer: Your Name
+license: Apache-2.0
+summary: Verify that the stack formula is setup and configured correctly
+supports:
+  - os-name: debian
+  - os-name: centos
+  - os-name: ubuntu
