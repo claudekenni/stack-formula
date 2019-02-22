@@ -8,7 +8,9 @@ Quick overview:
   - `/etc/salt/minion.d/_sdb.conf` using the SDB YAML Module
   - `/etc/salt/minion.d/_sdb_keys.conf` maps the top level keys into configuration values
      - See: https://docs.saltstack.com/en/latest/topics/sdb/index.html#using-sdb-uris-in-files
-
+- Now if we run the openssh.config state, the configuration values come from SDB but we can also use Pillar as needed.
+Important to note is that SDB Values take precedence over Pillar Values. This should not be a problem if we only use Pillar for secrets that should not exist in a text file anyway. 
+Because SDB works as a general purpose data module, we can also use something like the vault sdb module and query our Secrets that way which would make it possible to completely go away from pillar  
 
 The openssh-formula has been adjusted in openssh/map.jinja and openssh/config.sls to do a config.get instead of pillar.get
 ```jinja
