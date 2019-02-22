@@ -5,6 +5,17 @@ This is a prototype on how to create a map structure for use with Formulas / Sta
 
 Main usage here is that we iterate over different yaml files and then create a **yaml sdb** file which can then be queried by `salt['config.get']('key')`. 
 
+Quick overview:
+- Change formulas/states to use config.get instead of pillar.get 
+- Use stack state to create configuration values in `/etc/salt/minion.d/_stack.yaml`
+- `/etc/salt/minion.d/_stack.yaml` is read as SDB values in 
+  - `/etc/salt/minion.d/_sdb.conf` using the SDB YAML Module
+  - `/etc/salt/minion.d/_sdb_keys.conf` maps the top level keys into configuration values
+     - See: https://docs.saltstack.com/en/latest/topics/sdb/index.html#using-sdb-uris-in-files
+- Now if we run our state, the configuration values come from SDB but we can also use Pillar as needed.
+Important to note is that SDB Values take precedence over Pillar Values. This should not be a problem if we only use Pillar for secrets that should not exist in a text file anyway. 
+Because SDB works as a general purpose data module, we can also use something like the vault sdb module and query our Secrets that way which would make it possible to completely go away from pillar  
+
 
 Setup the Formula then run 
 ```
