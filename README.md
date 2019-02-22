@@ -3,26 +3,13 @@ mapstack-formula
 
 This is a prototype on how to create a map structure for use with Formulas / States. This is supposed to mimic the way pillarstack works (https://docs.saltstack.com/en/latest/ref/pillar/all/salt.pillar.stack.html)
 
-Main usage here is that we iterate over different yaml files and then create a config file in the minion.d folder
+Main usage here is that we iterate over different yaml files and then create a **yaml sdb** file which can then be queried by `salt['config.get']('key')`. 
 
-These values can then be used via `salt['config.get']('key')` and are easily overwritten by pillars / grains if the same key is available there
-
-Reason for this is to create a mechanism that can be used to get rid of extensive pillar data which is known to put heavy load on the master
 
 Setup the Formula then run 
-
 ```
 lab08ld201:/srv/formulas/stack-formula # salt-call state.apply stack
 local:
-----------
-          ID: Test state so minion comes back without failure
-    Function: test.succeed_without_changes
-        Name: foo
-      Result: True
-     Comment: Success!
-     Started: 19:56:41.075897
-    Duration: 0.561 ms
-     Changes:
 ----------
           ID: copy file
     Function: file.serialize
