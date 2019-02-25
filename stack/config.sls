@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # vim: ft=sls
 
+{#- Get the `topdir` from `tpldir` #}
+{%- set topdir = tpldir.split('/')[0] %}
 {%- from "stack/map.jinja" import stack with context %}
 {%- from "stack/macros.jinja" import files_switch with context %}
 {% set map = salt['slsutil.renderer']("salt://stack/map.sls") %}
@@ -10,7 +12,7 @@ stack-config:
     - name: {{ stack.sdb.config }}
     - source: {{ files_switch(
                     salt['config.get'](
-                        tpldir ~ ':tofs:files:stack-config',
+                        topdir ~ ':tofs:files:stack-config',
                         ['sdb.conf']
                     )
               ) }}
@@ -36,7 +38,7 @@ stack-keys-config:
     - name: {{ stack.sdb.sdb_keys }}
     - source: {{ files_switch(
                     salt['config.get'](
-                        tpldir ~ ':tofs:files:stack-config',
+                        topdir ~ ':tofs:files:stack-keys-config',
                         ['sdb_keys.conf']
                     )
               ) }}
