@@ -1,4 +1,4 @@
-mapstack-formula
+stack-formula
 ======
 
 This is a prototype on how to create a map structure for use with Formulas / States. This is supposed to mimic the way pillarstack works (https://docs.saltstack.com/en/latest/ref/pillar/all/salt.pillar.stack.html)
