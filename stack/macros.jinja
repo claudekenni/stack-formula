@@ -42,30 +42,42 @@
             - salt://xxx/files/default/etc/yyy/zzz.conf.jinja
           - stack: jinja
   #}
-  {%- set path_prefix = salt['config.get'](tpldir ~ ':tofs:path_prefix', tpldir) %}
-  {%- set files_dir = salt['config.get'](tpldir ~ ':tofs:dirs:files', 'files') %}
+  {#- Get the `topdir` from `tpldir` #}
+  {%- set topdir = tpldir.split('/')[0] %}
+  {%- set path_prefix = salt['config.get'](topdir ~ ':tofs:path_prefix', topdir) %}
+  {%- set files_dir = salt['config.get'](topdir ~ ':tofs:dirs:files', 'files') %}
   {%- set files_switch_list = salt['config.get'](
-      tpldir ~ ':tofs:files_switch',
+      topdir ~ ':tofs:files_switch',
       default_files_switch
   ) %}
-  {#- Append an empty value to evaluate as `default` in the loop below #}
-  {%- if '' not in files_switch_list %}
-    {%- do files_switch_list.append('') %}
-  {%- endif %}
-  {%- for fs in files_switch_list %}
-    {%- for file in files %}
-      {%- if fs %}
-        {%- set fs_dir = salt['config.get'](fs, fs) %}
-      {%- else %}
-        {%- set fs_dir = salt['config.get'](tpldir ~ ':tofs:dirs:default', 'default') %}
-      {%- endif %}
-      {%- set url = '- salt://' ~ '/'.join([
-          path_prefix,
-          files_dir,
-          fs_dir,
-          file.lstrip('/')
-      ]) %}
+  {#- Only add to [''] when supporting older TOFS implementations #}
+  {%- for path_prefix_ext in [''] %}
+    {%- set path_prefix_inc_ext = path_prefix ~ path_prefix_ext %}
+    {#- For older TOFS implementation, use `files_switch` from the pillar #}
+    {#- Use the default, new method otherwise #}
+    {%- set fsl = salt['pillar.get'](
+        topdir ~ path_prefix_ext|replace('/', ':') ~ ':files_switch',
+        files_switch_list
+    ) %}
+    {#- Append an empty value to evaluate as `default` in the loop below #}
+    {%- if '' not in fsl %}
+      {%- do fsl.append('') %}
+    {%- endif %}
+    {%- for fs in fsl %}
+      {%- for file in files %}
+        {%- if fs %}
+          {%- set fs_dir = salt['config.get'](fs, fs) %}
+        {%- else %}
+          {%- set fs_dir = salt['config.get'](topdir ~ ':tofs:dirs:default', 'default') %}
+        {%- endif %}
+        {%- set url = '- salt://' ~ '/'.join([
+            path_prefix_inc_ext,
+            files_dir,
+            fs_dir,
+            file.lstrip('/')
+        ]) %}
 {{ url | indent(indent_width, true) }}
+      {%- endfor %}
     {%- endfor %}
   {%- endfor %}
 {%- endmacro %}

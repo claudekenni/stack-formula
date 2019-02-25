@@ -33,6 +33,9 @@ stack:
     #   default: default_alt
     # files:
     #   stack-config:
-    #     - 'example_alt.tmpl'
-    #     - 'example_alt.tmpl.jinja'
-
+    #     - 'sdb.conf'
+    #     - 'sdb_alt.conf'
+    #   stack-keys-config:
+    #     - 'sdb_keys.conf'
+    #     - 'sdb_keys_alt.conf'
+          
