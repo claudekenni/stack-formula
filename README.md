@@ -233,3 +233,78 @@ sshd_config:
   X11DisplayOffset: 10
   X11Forwarding: 'no'
 ```
+
+Overriding a value for a specific minion
+```
+lab08ld201:/srv/formulas/mapstack-formula/stack/stack # cat common/Linux/salt-minion.yml
+salt:
+  minion:
+    master: 127.0.0.1
+lab08ld201:/srv/formulas/mapstack-formula/stack/stack # cat minions/lab08ld201/salt-minion.yml
+salt:
+  minion:
+    master: 10.10.10.50
+lab08ld201:/srv/formulas/mapstack-formula/stack/stack # salt-call state.apply stack
+[WARNING ] [u'stack/common/Linux', u'stack/domains/lab.fit', u'stack/domains/lab.fit/Linux', u'stack/minions/lab08ld201']
+[WARNING ] Importing: /var/cache/salt/minion/files/base/stack/stack/common/Linux/others.yml
+[WARNING ] Importing: /var/cache/salt/minion/files/base/stack/stack/common/Linux/salt-minion.yml
+[WARNING ] Importing: /var/cache/salt/minion/files/base/stack/stack/common/Linux/sshd_config.yml
+[WARNING ] Importing: /var/cache/salt/minion/files/base/stack/stack/domains/lab.fit/salt-minion.yml
+[WARNING ] Importing: /var/cache/salt/minion/files/base/stack/stack/domains/lab.fit/sshd_config.yml
+[WARNING ] Importing: /var/cache/salt/minion/files/base/stack/stack/minions/lab08ld201/salt-master.yml
+[WARNING ] Importing: /var/cache/salt/minion/files/base/stack/stack/minions/lab08ld201/salt-minion.yml
+local:
+----------
+          ID: stack-sdb-config
+    Function: file.managed
+        Name: /etc/salt/minion.d/sdb.conf
+      Result: True
+     Comment: File /etc/salt/minion.d/sdb.conf is in the correct state
+     Started: 09:33:55.653381
+    Duration: 72.556 ms
+     Changes:
+----------
+          ID: stack-yaml-file
+    Function: file.serialize
+        Name: /etc/salt/sdb/stack.yaml
+      Result: True
+     Comment: File /etc/salt/sdb/stack.yaml updated
+     Started: 09:33:55.726220
+    Duration: 14.269 ms
+     Changes:
+              ----------
+              diff:
+                  ---
+                  +++
+                  @@ -12,7 +12,7 @@
+                         base:
+                         - /srv/pillar
+                     minion:
+                  -    master: 127.0.0.1
+                  +    master: 10.10.10.50
+                   sshd_config:
+                     AcceptEnv: LANG LC_*
+                     AuthorizedKeysCommand: /usr/bin/sss_ssh_authorizedkeys
+----------
+          ID: stack-keys-config
+    Function: file.managed
+        Name: /etc/salt/minion.d/sdb_keys.conf
+      Result: True
+     Comment: File /etc/salt/minion.d/sdb_keys.conf is in the correct state
+     Started: 09:33:55.740775
+    Duration: 67.949 ms
+     Changes:
+Summary for local
+------------
+Succeeded: 3 (changed=1)
+Failed:    0
+------------
+Total states run:     3
+Total run time: 154.774 ms
+lab08ld201:/srv/formulas/mapstack-formula/stack/stack # salt-call config.get salt:minion
+local:
+    ----------
+    master:
+        10.10.10.50
+
+```
