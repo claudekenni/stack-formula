@@ -3,6 +3,6 @@
 ---
 stack:
   sdb:
-    config: '/etc/salt/minion.d/_sdb.conf'
-    yaml: '/etc/salt/minion.d/_stack.yaml'
-    sdb_keys: '/etc/salt/minion.d/_sdb_keys.conf'
+    config: '/etc/salt/minion.d/sdb.conf'
+    sdb_keys: '/etc/salt/minion.d/sdb_keys.conf'
+    yaml: '/etc/salt/sdb/stack.yaml'
