@@ -235,6 +235,7 @@ sshd_config:
 ```
 
 Overriding a value for a specific minion
+======
 ```
 lab08ld201:/srv/formulas/mapstack-formula/stack/stack # cat common/Linux/salt-minion.yml
 salt:
