@@ -1,7 +1,7 @@
 stack-formula
 ======
  
-In the current state of this formula there is a chicken egg problem. When new values are added or values change, then the highstate would need to run twice.
+**In the current state of this formula there is a chicken egg problem. When new values are added or values change, then the highstate would need to run twice.**
  
 This is a prototype on how to create a map structure for use with Formulas / States. This is supposed to mimic the way pillarstack works (https://docs.saltstack.com/en/latest/ref/pillar/all/salt.pillar.stack.html)
 
